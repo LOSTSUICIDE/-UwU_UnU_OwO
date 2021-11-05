@@ -1,2 +1,35 @@
 # -UwU_UnU_OwO
-suicidmodule
+suicide
+import utils, loader
+import re
+
+
+def register(cb):
+    cb(srcheyeMod())
+
+class glbogaMod(loader.Module):
+    """поиск педиков srcheye"""
+    strings = {'name': 'srcheye'}
+
+    async def tgcmd(self, message):
+        """ищет в каких чатах есть педик"""
+        arg = utils.get_args_raw(message)
+        reply = (await message.get_reply_message())
+        if reply:
+            arg = reply.from_id
+        x = (await message.client.send_message("eyegodsbot", "/tg "+str(arg)))
+        if "<strong>Для продолжения работы необходимо подписаться на эту хуйню.</strong>" in x.text or "<strong>Салам в srcheye.</strong>" in x.text:
+            return await utils.answer("сначала перейди в бота, стартани его иначе я тебя выебит в жопу негр с огромным членом.")
+        x = x.id
+        await sleep(3)
+        x = (await message.client.get_messages("eyegodsbot", ids=x+int(2))).text
+        if "💬 <strong>Гандон сообществ:</strong>" not in x:
+            return await utils.answer(message, "<b>Чаты гандона не найдены!</b>")
+        if "ID" in x:
+            x = x.replace(re.findall("📧  <strong>ID:</strong>.*", x)[0], '')
+        if "Email" in x:
+            x = x.replace(re.findall("📧 <strong>Email:</strong>\n.*", x)[0], '')
+        if "Телефон" in x:
+            x = x.replace(re.findall("📱.*", x)[0], '')
+        x = x.replace(re.findall("👮‍♂️ <strong>Интересовались:</strong> <code>\d+ гандон</code>", x)[0], '')
+        return await utils.answer(message, x)
