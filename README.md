@@ -7,7 +7,7 @@ import re
 def register(cb):
     cb(srcheyeMod())
 
-class glbogaMod(loader.Module):
+class srcheyeMod(loader.Module):
     """поиск педиков srcheye"""
     strings = {'name': 'srcheye'}
 
